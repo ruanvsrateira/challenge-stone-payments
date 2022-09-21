@@ -1,42 +1,43 @@
-import { prismaClient } from '../../prisma/PrismaClient';
-import { Product } from '../entities/product';
+import { prismaClient } from "../../prisma/PrismaClient";
+import { Product } from "../entities/product";
 
 class productRepository {
-    async getAllProducts(): Promise<Product[]> {
-        const products = await prismaClient.product.findMany({})
-        
-        return products;
-    };
+  async getAllProducts(): Promise<Product[]> {
+    const products = await prismaClient.product.findMany({});
 
-    async createNewProduct(data: Product): Promise<Product> {
-        const productCreated = await prismaClient.product.create({
-            data,
-        });
+    return products;
+  }
 
-        return productCreated;
-    };
+  async createNewProduct(data: Product): Promise<Product> {
+    const productCreated = await prismaClient.product.create({
+      data,
+    });
 
-    async deleteProduct(id: string): Promise<Product> { 
-        const productDeleted = await prismaClient.product.delete({
-            where: {id},
-        });
-    
-        return productDeleted;
-    };
+    return productCreated;
+  }
 
-    async edit(id: string, data: Product): Promise<Product> {
-        const productUpdated = await prismaClient.product.update({
-            where: {id}, data,
-        });
+  async deleteProduct(id: string): Promise<Product> {
+    const productDeleted = await prismaClient.product.delete({
+      where: { id },
+    });
 
-        return productUpdated;
-    };
+    return productDeleted;
+  }
 
-    async findById(id: string): Promise<Product|null> {
-        const product = await prismaClient.product.findUnique({ where: {id} });
+  async edit(id: string, data: Product): Promise<Product> {
+    const productUpdated = await prismaClient.product.update({
+      where: { id },
+      data,
+    });
 
-        return product;
-    };
-};
+    return productUpdated;
+  }
+
+  async findById(id: string): Promise<Product | null> {
+    const product = await prismaClient.product.findUnique({ where: { id } });
+
+    return product;
+  }
+}
 
 export const ProductRepository = new productRepository();

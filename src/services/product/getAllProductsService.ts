@@ -2,16 +2,16 @@ import { getRedis, setRedis } from "../../config/redis";
 import { Product } from "../../entities/product";
 import { ProductRepository } from "../../repositories/productRepository";
 
-export const GetAllProductsService = async(): Promise<Product[]> => {
-    const productsCached = await getRedis("products");
-    
-    if(!productsCached) {
-        const products = await ProductRepository.getAllProducts();
+export const GetAllProductsService = async (): Promise<Product[]> => {
+  const productsCached = await getRedis("products");
 
-        await setRedis("products", JSON.stringify(products));
+  if (!productsCached) {
+    const products = await ProductRepository.getAllProducts();
 
-        return products;
-    } else {
-        return JSON.parse(productsCached);
-    };
+    await setRedis("products", JSON.stringify(products));
+
+    return products;
+  } else {
+    return JSON.parse(productsCached);
+  }
 };

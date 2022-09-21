@@ -3,6 +3,7 @@ version: '3'
 services:
   database:
     image: postgres
+    container_name: challenge-stone-postgres
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "Senac123"
@@ -12,6 +13,7 @@ services:
       - ./src/database/database-docker:/var/lib/postgresql/data 
   redis:
     image: redis
+    container_name: challenge-stone-redis
     command: redis-server --requirepass Senac123
     ports:
       - "6379:6379"

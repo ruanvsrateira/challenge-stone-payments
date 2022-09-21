@@ -1,44 +1,45 @@
-import { Request, Response } from 'express';
-import { CreateNewTransaction } from '../services/transaction/createNewTransaction';
-import { GetAllTransactionsService } from '../services/transaction/getAllTransactionsService';
-import { GetTransactionByClientIdService } from '../services/transaction/getTransactionByClientIdService';
+import { Request, Response } from "express";
+import { CreateNewTransaction } from "../services/transaction/createNewTransaction";
+import { GetAllTransactionsService } from "../services/transaction/getAllTransactionsService";
+import { GetTransactionByClientIdService } from "../services/transaction/getTransactionByClientIdService";
 
 class transactionController {
-    constructor() {};
+  constructor() {}
 
-    async buy(req: Request, res: Response): Promise<Response> {
-        try {
-            const {
-                client_id, client_name, total_to_pay, credit_card
-            } = req.body;
-    
-            const transactionCreated = await CreateNewTransaction({
-                client_id, client_name, total_to_pay, credit_card
-            });
-    
-            return res.json({ transaction_created: transactionCreated });
-        } catch(err) {    
-            if(err == "Error: data not true") {
-                return res.json({ error: String(err).replace('Error: ', '') });
-            };
+  async buy(req: Request, res: Response): Promise<Response> {
+    try {
+      const { clientId, clientName, totalToPay, creditCard } = req.body;
 
-            return res.json({ error: 'unknown error' });
-        };
-    };
+      const transactionCreated = await CreateNewTransaction({
+        clientId,
+        clientName,
+        totalToPay,
+        creditCard,
+      });
 
-    async get(req: Request, res: Response): Promise<Response> {
-        const transactions = await GetAllTransactionsService();
-    
-        return res.json(transactions);
-    };
+      return res.json({ transaction_created: transactionCreated });
+    } catch (err) {
+      if (err == "Error: data not true") {
+        return res.json({ error: String(err).replace("Error: ", "") });
+      }
 
-    async getFromClient(req: Request, res: Response): Promise<Response> {
-        const { clientId } = req.params;
+      return res.json({ error: "unknown error" });
+    }
+  }
 
-        const transactions = await GetTransactionByClientIdService(clientId);
+  async get(req: Request, res: Response): Promise<Response> {
+    const transactions = await GetAllTransactionsService();
 
-        return res.json(transactions);
-    };
-};
+    return res.json(transactions);
+  }
+
+  async getFromClient(req: Request, res: Response): Promise<Response> {
+    const { clientId } = req.params;
+
+    const transactions = await GetTransactionByClientIdService(clientId);
+
+    return res.json(transactions);
+  }
+}
 
 export const TransactionController = new transactionController();

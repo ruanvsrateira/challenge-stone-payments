@@ -1,47 +1,53 @@
-import { prismaClient } from '../../prisma/PrismaClient';
-import { CreditCard } from '../entities/creditCard';
+import { prismaClient } from "../../prisma/PrismaClient";
+import { CreditCard } from "../entities/creditCard";
 
 class creditCardRepository {
-    constructor(){};
+  constructor() {}
 
-    async createCreditCard(data: CreditCard) {
-        const creditCardCreated = await prismaClient.creditCard.create({
-            data: {
-                card_holder_name: data.card_holder_name,
-                card_number: data.card_number,
-                cvv: data.cvv,
-                exp_date: data.exp_date,
-                value: data.value,
-                client: {
-                    connect: {
-                        id: data.client_id
-                    },
-                },
-            },  
-        });
+  async createCreditCard(data: CreditCard) {
+    const creditCardCreated = await prismaClient.creditCard.create({
+      data: {
+        cardHolderName: data.cardHolderName,
+        cardNumber: data.cardNumber,
+        cvv: data.cvv,
+        expDate: data.expDate,
+        value: data.value,
+        client: {
+          connect: {
+            id: data.clientId,
+          },
+        },
+      },
+    });
 
-        return creditCardCreated;
-    };
+    return creditCardCreated;
+  }
 
-    async deleteCreditCardFromClient(client_id: string) {
-        const creditCard = await prismaClient.creditCard.delete({
-            where: { client_id },
-        });
+  async deleteCreditCardFromClient(clientId: string) {
+    const creditCard = await prismaClient.creditCard.delete({
+      where: { clientId },
+    });
 
-        return creditCard;
-    };
+    return creditCard;
+  }
 
-    async findByClientId(client_id: string) {
-        const creditCard = await prismaClient.creditCard.findUnique({ where: { client_id } });
-    
-        return creditCard;
-    };
+  async findByClientId(clientId: string) {
+    const creditCard = await prismaClient.creditCard.findUnique({
+      where: { clientId },
+    });
 
-    async findByCreditCardNumber(card_number: string): Promise<CreditCard|null> {
-        const creditCard = await prismaClient.creditCard.findUnique({ where: {card_number}});
+    return creditCard;
+  }
 
-        return creditCard;
-    };
-};
+  async findByCreditCardNumber(
+    cardNumber: string
+  ): Promise<CreditCard | null> {
+    const creditCard = await prismaClient.creditCard.findUnique({
+      where: { cardNumber },
+    });
+
+    return creditCard;
+  }
+}
 
 export const CreditCardRepository = new creditCardRepository();

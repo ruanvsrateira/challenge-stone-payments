@@ -25,24 +25,24 @@ model Client {
   name          String
   email         String @unique
   password      String
-  credit_card   CreditCard?
+  creditCard    CreditCard?
 }
 
 model CreditCard{
   id                String @id @default(uuid())
-  card_number       String @unique
-  card_holder_name  String
+  cardNumber        String @unique
+  cardHolderName    String
   value             Int
   cvv               Int
-  exp_date          String
-  client            Client @relation(fields: [client_id], references: [id])
-  client_id         String @unique
+  expDate           String
+  client            Client @relation(fields: [clientId], references: [id])
+  clientId          String @unique
 }
 
 model Transaction {
-  purchase_id   String @id @default(uuid())
-  card_number   String
+  purchaseId   String @id @default(uuid())
+  cardNumber    String
   value         Int
   date          String 
-  client_id     String
+  clientId      String
 }
